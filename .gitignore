@@ -1,0 +1,8 @@
+#Extension
+*.csv
+*.pth
+*.exe
+
+#Folder
+datasets/
+models/
