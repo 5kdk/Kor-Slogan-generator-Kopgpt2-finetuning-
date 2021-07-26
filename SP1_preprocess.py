@@ -11,7 +11,7 @@ row_df = pd.read_csv(DATA_IN_PATH + "/" + ROW_DATA)
 
 row_df = row_df.dropna()
 row_df = row_df.drop_duplicates(keep="first")
-row_df = row_df.reset_index(drop=False)
+row_df = row_df.reset_index(drop=True)
 
 temp_df = row_df.copy()
 temp_df["company"] = temp_df["company"].replace(
