@@ -2,9 +2,8 @@ import pandas as pd
 
 DATA_IN_PATH = "./datasets"
 ROW_DATA = "final.csv"
-EN_DATA = "final_with_en_slogans.csv"
-KO_DATA = "final_ko_slogan.csv"
-
+# EN_DATA = "final_with_en_slogans.csv"
+# KO_DATA = "final_ko_slogan.csv"
 # eng = "[A-Za-z]"
 
 row_df = pd.read_csv(DATA_IN_PATH + "/" + ROW_DATA)
@@ -12,18 +11,23 @@ row_df = pd.read_csv(DATA_IN_PATH + "/" + ROW_DATA)
 row_df = row_df.dropna()
 row_df = row_df.drop_duplicates(keep="first")
 row_df = row_df.reset_index(drop=True)
+row_df = row_df.apply(lambda x: x.str.strip(), axis=1)
 
 temp_df = row_df.copy()
-temp_df["company"] = temp_df["company"].replace(
-    "[-=+#/\:^$@*\"※~&%ㆍ』\\‘|\(\)\[\]\<\>`'…》]", "", regex=True
-)
-temp_df["slogan"] = temp_df["slogan"].replace(
-    "[-=+#/\:^$@*\"※~&%ㆍ』\\‘|\(\)\[\]\<\>`'…》]", "", regex=True
-)
+
+temp_df["company"].replace(", ", ",", regex=True, inplace=True)
+#temp_df["company"].replace(",", ", ", regex=True, inplace=True)
+temp_df["company"].replace(",", " ", regex=True, inplace=True)
+temp_df["company"].replace('[-=+#/\:^$@*"※~&%ㆍ』\\‘|\(\)\[\]\<\>`’…》]', "", regex=True, inplace=True)
+temp_df["company"].replace("  ", " ", regex=True, inplace=True)
+temp_df["slogan"].replace('[-=+#/\:^$@*"※~&%ㆍ』\\‘|\(\)\[\]\<\>`’…》]', "", regex=True, inplace=True)
+temp_df["slogan"].replace("  ", " ", regex=True, inplace=True)
 
 row_df = temp_df
 
-row_df.to_csv(DATA_IN_PATH + "/" + "processed_slogan.csv", encoding="utf-8", index=None)
+
+# row_df.to_csv(DATA_IN_PATH + "/" + "processed_slogan.csv", encoding="utf-8-sig", index=None)
+row_df.to_csv(DATA_IN_PATH + "/" + "processed_slogan_no_comma.csv", encoding="utf-8-sig", index=None)
 print(row_df)
 
 # # 영어 들어간 row만 선택
